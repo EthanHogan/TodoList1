@@ -8,12 +8,7 @@ const connection = mysql.createConnection({
 
 connection.connect()
 
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
-});
-
-// function that can get all todos from DB
+// function that can get all todos from DB and returns them with their id's
 function getAllTodos(){
   return new Promise ((resolve, reject) => {
     connection.query('SELECT * FROM Todos;', (err, results) => {
@@ -40,3 +35,9 @@ function postATodo(todo){
 }
 
 module.exports = {getAllTodos, postATodo}
+
+
+// connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+  //   if (error) throw error;
+  //   console.log('The solution is: ', results[0].solution);
+  // });

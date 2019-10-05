@@ -8,7 +8,7 @@ app.use(express.static('dist'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-
+// get all todos from database and send them back with their id's
 app.get('/todo', (req, res) => {
   (async () => {
     var todos = await db.getAllTodos()
@@ -20,6 +20,7 @@ app.get('/todo', (req, res) => {
   });
 })
 
+// add a todo to the database, send back the insertId in response
 app.post('/todo', (req, res) => {
   var todo = req.body.todo;
   (async () => {
@@ -32,6 +33,7 @@ app.post('/todo', (req, res) => {
   });
 })
 
+// need delete route for deleting todos from DB
 
 
 app.listen(port, () => {
