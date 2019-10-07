@@ -13,55 +13,53 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //how to do a get request with axios!
-    // axios.get('/todo')
-    // .then(response => {
-    //   this.setState({
-    //     data: response.data
-    //   })
-    // })
-    // .then(() => console.log(this.state.data))
-
-    const url = 'http://localhost:4000/todo';
-    fetch(url)
-    .then(response => response.json())
-    .then(allTodos => {
-      this.setState({
-        data: allTodos
-      })
-    })
-    .then(() => console.log(this.state.data))
-    .catch(err => console.log(err))
+    this.getTodosAndSetState();
   }
-  
 
-  saveTodo(todo) {
-    // how to do a post request with axios!
-    // axios.post('/todo', {
-    //   todo: todo
-    // })
-    // .then(response => console.log(response))
+  getTodosAndSetState() {
+    this.fetchAllTodos()
+    .then(allTodos => {
+      this.setStateWithTodos(allTodos)
+    })
+  }
 
-    // how to do the same post request with fetch!
-    const url = 'http://localhost:4000/todo';
-    let fetchData = {
-      method: 'POST',
-      body: JSON.stringify({todo: todo}),
-      headers: { "Content-Type" : "application/json"}
-    }
-    fetch(url, fetchData)
-    .then(() => {
+  fetchAllTodos() {
+    return new Promise ((resolve, reject) => {
+      const url = 'http://localhost:4000/todo';
       fetch(url)
       .then(response => response.json())
       .then(allTodos => {
-        this.setState({
-          data: allTodos
-        })
+        resolve(allTodos)
       })
-      .then(() => console.log(this.state.data))
-      .catch(err => console.log(err))
+      .catch(err => reject(err))
     })
-    .catch(err => console.log(err))
+  }
+  
+  postATodo(todo) {
+    return new Promise ((resolve, reject) => {
+      axios.post('/todo', {
+        todo: todo
+      })
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    })
+  }
+  
+  setStateWithTodos(allTodos) {
+    this.setState({
+      data: allTodos
+    })
+  }
+  
+  saveTodo(todo) {
+    this.postATodo(todo)
+    .then(() => {
+      this.getTodosAndSetState();
+    })
   }
 
   deleteTodo(event){
@@ -71,21 +69,10 @@ class App extends React.Component {
         id: id
       } 
     })
-    .then( () => {
-      const url = 'http://localhost:4000/todo';
-      fetch(url)
-      .then(response => response.json())
-      .then(allTodos => {
-        this.setState({
-          data: allTodos
-        })
-      })
-      .then(() => console.log(this.state.data))
-      .catch(err => console.log(err))
+    .then(() => {
+      this.getTodosAndSetState();
     })
   }
-
-
 
   render() {
     return (
