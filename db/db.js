@@ -34,7 +34,19 @@ function postATodo(todo){
   })
 }
 
-module.exports = {getAllTodos, postATodo}
+//function that deletes a todo from the DB at a given id
+function deleteATodo(id) {
+  return new Promise((resolve, reject) => {
+    connection.query('DELETE FROM Todos WHERE id = (?)', [id], (err, results) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(results)
+      }
+    })
+  })
+}
+module.exports = {getAllTodos, postATodo, deleteATodo}
 
 
 // connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {

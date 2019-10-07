@@ -7,7 +7,7 @@
     "test": "jest",
     "start": "webpack -d --watch",
     "start-oh": "webpack -d --watch",
-    "server" : "nodemon ./server/server.js"
+    "server": "nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",

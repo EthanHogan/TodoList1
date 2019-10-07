@@ -20,12 +20,13 @@ app.get('/todo', (req, res) => {
   });
 })
 
-// add a todo to the database, send back the insertId in response
+// add a todo to the database
 app.post('/todo', (req, res) => {
+  console.log(req.body);
   var todo = req.body.todo;
   (async () => {
     var insertId = await db.postATodo(todo);
-    res.send(insertId+'');
+    res.send('' + insertId);
   })()
   .catch((err) => {
     console.log(err);
@@ -34,6 +35,15 @@ app.post('/todo', (req, res) => {
 })
 
 // need delete route for deleting todos from DB
+app.delete('/todo', (req, res) => {
+  var id = req.body.id;
+  db.deleteATodo(id)
+  .then(() => {
+    res.send(`To do at ID: ${id} removed` )
+  })
+  .catch(err => console.log(err))
+})
+
 
 
 app.listen(port, () => {
